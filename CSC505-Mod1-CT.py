@@ -9,14 +9,18 @@
 
 def FizzBuzz(n):
     for i in range(1, n + 1):
+        # Check if the current number is divisible by both 3 and 5
         if i % 3 == 0 and i % 5 == 0:
             print("FizzBuzz")
+        # Check if the current number is divisible only by 5
         elif i % 5 == 0:
             print("Buzz")
+        # Check if the current number is divisible only by 3
         elif i % 3 == 0:
             print("Fizz")
+        # If the number is neither divisible by 3 nor 5, print the number
         else:
             print(i)
 
 
-FizzBuzz(45)
+FizzBuzz(30)
