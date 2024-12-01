@@ -4,6 +4,7 @@
 # Potential solution using a Python dictionary
 # Set dictionary of the page names and page numbers
 Mod3_CT_Dict = {'Page 1': 'App Diagram', 'Page 2': 'Home Screen', 'Page 3': 'Cart Main Menu', 'Page 4': 'Item Main Menu'}
+print('Potential solution using a Python dictionary')
 
 # Iterate through dictionary and display the page names and page numbers
 for page in Mod3_CT_Dict:
@@ -12,6 +13,7 @@ for page in Mod3_CT_Dict:
 # Potential solution using Python list and enumerate
 # Set list of the pages names 
 Mod3_CT_List = ['App Diagram', 'Home Screen', 'Cart Main Menu', 'Item Main Menu']
+print('Potential solution using Python list and enumerate')
 
 # Iterate through list and display page names by index (set index starting postition to 1)
 for i, page in enumerate(Mod3_CT_List, 1):
