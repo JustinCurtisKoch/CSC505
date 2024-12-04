@@ -1,0 +1,11 @@
+# Module 2: Critical Thinking Assignment
+# Implement the YourLastName class using Python. Prompt user to input the key elements of the diagram and return these objects in a well-formatted output.
+
+#
+
+class KochClass:
+    def __init__(self, stage_name, stage_goal, stage_actvity):
+        self.stage_name = stage_name
+        self.stage_goal = stage_goal
+        self.stage_actvity = stage_actvity
+        
