@@ -2,6 +2,7 @@
 # Write a Python Script that will print  a brief description and names and number of the important steps in constructing a 'software devloper'. 
 # Use Python 'Builder Pattern' for inspiration.
 
+# Define director class for developer
 class Developer:
     def __init__(self):
         self.problem_solver = None
@@ -25,6 +26,7 @@ class Developer:
             raise Exception("Missing required traits")
         return self
 
+# define the required description print out
     def print_description(self):
         print("An excellent software developer possesses three key traits:")
         print("1. Problem-solving:")
@@ -34,6 +36,7 @@ class Developer:
         print("3. Continuous Learning:")
         print(f"  - {self.learner.description}")
 
+# Define the builder classes
 class ProblemSolver:
     def __init__(self, description):
         self.description = description
@@ -46,7 +49,7 @@ class Learner:
     def __init__(self, description):
         self.description = description
 
-# Example usage:
+# Implement the developer
 developer = Developer() \
     .set_problem_solver(ProblemSolver("Ability to break down complex problems and find creative solutions.")) \
     .set_communicator(Communicator("Effective communication skills for collaborating with teams and stakeholders.")) \
