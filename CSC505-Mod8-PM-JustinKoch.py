@@ -1,59 +1,110 @@
-# Module 8: Portfolio Milestone (ATM).
-# Write a Python script to develop a basic ATM program.
-
-# Import hashlib for hashing the user's password
 import hashlib
 
-# Create sample card number and PIN pairs for testing 
+# Create user sample card number and PIN pair, add initial balances.
 user_database = {
-    "475100": hashlib.sha256("58008".encode()).hexdigest(),
-    "475201": hashlib.sha256("pswrd".encode()).hexdigest(),
-    "476000": hashlib.sha256("CSU25".encode()).hexdigest()
+    "475100": {"pin": hashlib.sha256("58008".encode()).hexdigest(), "balance": 1000.00},
+    "475201": {"pin": hashlib.sha256("pswrd".encode()).hexdigest(), "balance": 500.00},
+    "476000": {"pin": hashlib.sha256("csu25".encode()).hexdigest(), "balance": 0.00}
 }
 
 # Define a function to hash a password for validation
-def hash_PIN(PIN):
-    return hashlib.sha256(PIN.encode()).hexdigest()
+def hash_pin(pin):
+    return hashlib.sha256(pin.encode()).hexdigest()
 
-# Create a dictionary to tracked any locked accounts
+# Create a dictionary to track any locked accounts
 locked_accounts = {}
 
-# Define a function to validate username account is not locked
-def account_locked(card_number):
+# Define a function to validate if the card account is locked
+def is_account_locked(card_number):
     return card_number in locked_accounts
+
+# Define a function for ATM feature: Check Balance
+def check_balance(card_number):
+    balance = user_database[card_number]["balance"]
+    print(f"Your current balance is: ${balance:.2f}")
+    if balance == 0:
+        print("Warning: Your account balance is $0!")
+
+# Define a function for ATM feature: Deposit
+def deposit(card_number, amount):
+    if amount > 0:
+        user_database[card_number]["balance"] += amount
+        print(f"Successfully deposited ${amount:.2f}.")
+    else:
+        print("Deposit cannot be $0.")
+
+# Define a function for ATM feature: Withdrawal
+def withdraw(card_number, amount):
+    balance = user_database[card_number]["balance"]
+    if amount <= 0:
+        print("Withdrawal amount cannot be $0.")
+    elif amount % 20 != 0:
+        print("Withdrawal amount must be in $20 increments.")
+    elif amount > balance:
+        print("Insufficient funds for this withdrawal.")
+    else:
+        user_database[card_number]["balance"] -= amount
+        print(f"Successfully withdrew ${amount:.2f}.")
 
 # Define a function that handles the login process
 def login():
     print("Welcome to the CSU Global ATM!")
-    print("To continue, please insert your CARD now:")
+    print("To continue, please insert your CARD.")
     card_number_input = input()
-    
-    if account_locked(card_number_input):
-        print("This account has been locked due to too many failed attempts.")
+
+# Check if the account is locked
+    if is_account_locked(card_number_input):
+        print("This card is locked due to too many failed PIN attempts.")
         return False
-    
-    # Create login attempt counter
+
+# Create login attempt metrics and counter
     attempts = 0
     max_attempts = 3
 
     while attempts < max_attempts:
-        PIN_input = input("Enter your PIN: ")
+        pin_input = input("Enter your PIN: ")
         
-        # Validate the card number exists and verify the hashed PIN
-        if card_number_input in user_database and user_database[card_number_input] == hash_PIN(PIN_input):
-            print("Login successful! Access granted.")
-            return True
+        # Check if the card number exists and verify the hashed PIN
+        if card_number_input in user_database and user_database[card_number_input]["pin"] == hash_pin(pin_input):
+            print("Account access granted.")
+            return card_number_input
         else:
             attempts += 1
-            print(f"Card number and PIN do not match! You have {max_attempts - attempts} attempt(s) left.")
+            print(f"Account access failed! You have {max_attempts - attempts} attempt(s) left.")
     
-    # Lock the account if max attempts reached
+    # Lock the card if max attempts reached
     locked_accounts[card_number_input] = True
-    print("This account will be locked due to too many failed attempts.")
+    print("Card locked due to too many failed PIN attempts.")
     return False
 
-# Run the login function
-if login():
-    print("You can now access your account.")
+# Define the main ATM operations menu
+def atm_operations(card_number):
+    while True:
+        print("\nCSU Golbal ATM Operations Menu:")
+        print("1. Check Balance")
+        print("2. Deposit")
+        print("3. Withdraw")
+        print("4. Exit")
+        
+        choice = input("Select an option (1-4): ")
+        
+        if choice == '1':
+            check_balance(card_number)
+        elif choice == '2':
+            amount = float(input("Enter amount to deposit: "))
+            deposit(card_number, amount)
+        elif choice == '3':
+            amount = float(input("Enter amount to withdraw ($20 increments): "))
+            withdraw(card_number, amount)
+        elif choice == '4':
+            print("Thank you for using the CSU Global ATM. Goodbye!")
+            break
+        else:
+            print("Invalid selection. Please choose a valid option.")
+
+# Example usage
+card_number = login()
+if card_number:
+    atm_operations(card_number)
 else:
     print("Exiting the ATM application.")
